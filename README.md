@@ -32,10 +32,13 @@ Edit ansible inventory with your ips and ssh access key:
 
     vim inventory
 
-** add vagrant env
+**Add vagrant env
+
 https://www.vagrantup.com/docs/installation/
+
 https://www.vagrantup.com/docs/cli/
-vagrant box add centos/7
+
+    vagrant box add centos/7
 
 **Deploy consul, docker, dnsmasq & nomad**
 
