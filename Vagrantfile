@@ -56,7 +56,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Fix new ip not showing after initialized
   config.vm.provision "shell", run: "always", inline: "sudo /sbin/ifup eth1"
-  
-  
-  
 end
