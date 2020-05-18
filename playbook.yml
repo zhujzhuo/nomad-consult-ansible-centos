@@ -1,0 +1,26 @@
+# INSTALL & UPGRADE OS PACKAGES
+
+- hosts: all
+  become: yes
+  tasks:
+    #- name: upgrade all packages
+    #  yum: name=* state=latest
+
+    - name: install troubleshooting packages
+      shell: yum -y install nc net-tools bind-utils openssl openssl-devel  
+      when: ansible_os_family == "CentOS" and ansible_lsb.major_release|int == 7
+
+
+# INSTALL CONSUL + NOMAD
+
+- hosts: all
+  become: yes
+  roles:
+    - ansible-role-consul
+    #- ansible-role-dnsmasq
+    - ansible-role-nomad
+
+- hosts: client
+  become: yes
+  roles:
+    - ansible-role-docker

@@ -1,0 +1,22 @@
+datacenter = "{{ nomad_datacenter }}"
+
+client {
+    enabled = true
+    network_interface = "eth1"
+
+    network_speed = 500
+    node_class    = "{{ nomad_class }}"
+
+    options = {
+        "driver.raw_exec.enable" = "1"
+    }
+
+    reserved {
+        cpu            = 500
+        memory         = 512
+        disk           = 1024
+        reserved_ports = "22,80,8500-8600"
+    }
+
+   gc_max_allocs = 10
+}

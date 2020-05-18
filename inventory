@@ -1,0 +1,25 @@
+# Vagrant hosts
+node1 ansible_host=172.28.128.10 ansible_ssh_host=172.28.128.10 ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_ssh_private_key_file='/vagrant/.vagrant/machines/node1/virtualbox/private_key' consul_bootstrap=true
+node2 ansible_host=172.28.128.11 ansible_ssh_host=172.28.128.11 ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_ssh_private_key_file='/vagrant/.vagrant/machines/node2/virtualbox/private_key' consul_bootstrap=true
+node3 ansible_host=172.28.128.12 ansible_ssh_host=172.28.128.12 ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_ssh_private_key_file='/vagrant/.vagrant/machines/node3/virtualbox/private_key' consul_bootstrap=true
+node4 ansible_host=172.28.128.13 ansible_ssh_host=172.28.128.13 ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_ssh_private_key_file='/vagrant/.vagrant/machines/node4/virtualbox/private_key'
+node5 ansible_host=172.28.128.14 ansible_ssh_host=172.28.128.14 ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_ssh_private_key_file='/vagrant/.vagrant/machines/node5/virtualbox/private_key'
+
+
+[server]
+node1
+node2
+node3
+
+[client]
+node4
+node5
+
+[client:vars]
+nomad_client=true
+nomad_server=false
+[all:vars]
+bootstrap_expect = 3
+debug=false
+nomad_class=prod
+nomad_datacenter=dc1

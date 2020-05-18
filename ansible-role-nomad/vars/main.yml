@@ -1,0 +1,12 @@
+---
+
+nomad_url: https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip
+nomad_sha256sum: 0c190d3cca12b75645e946e49207bf62bff8e0d8f52eee43dc059dbb8814da99 
+nomad_download_dir: /tmp
+nomad_install_dir: /usr/bin
+nomad_data_dir: /var/lib/nomad
+nomad_config_dir: /var/lib/nomad/conf
+nomad_log_file: /var/lib/nomad/logs/nomad.log
+nomad_user: nomad
+nomad_group: nomad
+nomad_service_name: nomad
