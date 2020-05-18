@@ -1,0 +1,7 @@
+---
+haproxy_download_dir: /tmp
+haproxy_run_dir: /run/haproxy
+haproxy_install_dir:  /usr/local/sbin
+haproxy_log_dir: /data/logs/haproxy
+haproxy_group: haproxy
+haproxy_user: haproxy

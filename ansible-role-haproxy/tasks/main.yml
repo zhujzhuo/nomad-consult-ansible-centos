@@ -1,0 +1,59 @@
+---
+- name: Create Haproxy group
+  group: name={{ haproxy_group }} system=yes state=present
+
+- name: Create Haproxy user
+  user: >
+    name={{ haproxy_user }}
+    shell=/bin/false
+    createhome=no
+    group={{ haproxy_group }}
+    system=yes
+    state=present
+
+- name: Copy Haproxy tar.gz to dest
+  copy: src=soft/haproxy-{{haproxy_version}}.tar.gz dest={{ haproxy_download_dir }}/haproxy.tar.gz 
+
+- name: Unzip Haproxy to installation directory
+  command: tar -xf {{ haproxy_download_dir }}/haproxy.tar.gz -C /tmp/
+  tags: haproxy
+
+- name: Create Haproxy directory
+  file: >
+    path={{ item }}
+    owner={{ haproxy_user }}
+    group={{ haproxy_group }}
+    mode=0755
+    state=directory
+  with_items:
+    - "{{ haproxy_install_dir }}"
+    - "{{ haproxy_run_dir }}"
+- name: Create Haproxy log  directory
+  file: >
+    path={{ item }}
+    owner={{ nomaduser }}
+    group={{ nomadgroup }}
+    mode=0755
+    state=directory
+  with_items:
+    - "{{ haproxy_log_dir }}"
+
+- name: install systemd-devel
+  shell: yum install -y systemd-devel gcc* make openssl* 
+  become: True
+
+- name: Complie haproxy default in /usr/local/sbin/haproxy
+  shell: if [ ! -f {{ haproxy_run_dir }}/.installed ];then cd /tmp/haproxy-{{ haproxy_version }} && sudo make ARCH=x86_64 TARGET=linux-glibc USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1 USE_SYSTEMD=1 USE_CPU_AFFINITY=1 >/dev/null && sudo make install && touch {{ haproxy_run_dir }}/.installed;fi 
+
+- name: Check haproxy install ok
+  shell: if [ -f /usr/local/sbin/haproxy ];then exit 0 ;else exit 1;fi
+
+- name: Haproxy logrotate config
+  copy: src="logrotate.d/haproxy" dest="/etc/logrotate.d/"
+
+- name: Haproxy rsyslog config
+  copy: src="rsyslog.d/haproxy.conf" dest="/etc/rsyslog.d/"
+  notify: restart rsyslog
+
+- name: Ensure rsyslog service is started and enabled on boot
+  service: name=rsyslog state=started enabled=yes

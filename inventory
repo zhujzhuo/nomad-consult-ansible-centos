@@ -23,3 +23,5 @@ bootstrap_expect = 3
 debug=false
 nomad_class=prod
 nomad_datacenter=dc1
+nomaduser=root
+nomadgroup=root
